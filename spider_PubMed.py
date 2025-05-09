@@ -1,8 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 
-关键词 = input('请输入你想要搜索的英文关键词，按回车结束：')
-页数 = input('请输入你想看到的页数，按回车结束：')
+# 关键词 = input('请输入你想要搜索的英文关键词，按回车结束：')
+# 页数 = input('请输入你想看到的页数，按回车结束：')
+关键词 = 'breakfast skipping'
+页数 = 399
+
 g = 1
 
 for j in range(1, int(页数) + 1):

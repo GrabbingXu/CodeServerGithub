@@ -1,52 +1,80 @@
 # Forked from https://blog.csdn.net/2301_79376014/article/details/142071980
 import random as rd
-import numpy as np
 import math
 import matplotlib.pyplot as plt
-import matplotlib
-matplotlib.rcParams['font.family'] = 'SimHei'  # 或者 'Microsoft YaHei'
-matplotlib.rcParams['axes.unicode_minus'] = False  # 解决负号'-'
+from matplotlib.font_manager import FontProperties
+import numpy as np
 
-#%%
-#定义实验基本参量
-#a:平行线距离,l:针长,n:投掷次数
-a=1
-l=0.5
-n=100000
-k=100
-#%%
-#进行实验,x:针与最近平行线之间的距离，φ：针角度,m:相交次数,PI:最终计算圆周率
-#绘图项:x_history,phi_history,joint_list
-m=0
-x_history=[]
-phi_history=[]
-joint_list=[]
+# ====== 字体配置 ======
+# 指定Noto Sans CJK SC字体文件路径
+font_path = "/usr/share/fonts/google-noto-sans-cjk-fonts/NotoSansCJK-Regular.ttc"
 
+# 创建字体属性对象
+cn_font = FontProperties(fname=font_path)
 
-for i in range(n):
-    x=rd.uniform(0,a/2)
-    phi=rd.uniform(0,math.pi)
-    x_history.append(x)
-    phi_history.append(phi)
-#判断相交：l*sin(phi)/2>x
-    if l*math.sin(phi)/2>=x:
-        m+=1
-        joint_list.append(1)
-    else:
-        joint_list.append(0)
+# 全局字体设置
+plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
 
-PI=2*l*n/(a*m)
+# ====== 实验参数 ======
+a = 1        # 平行线间距
+l = 0.5      # 针的长度
+n = 100000   # 投掷次数
 
-#输出结果
-print(f'模拟所得圆周率:{PI}')
+# ====== 向量化计算优化 ======
+# 使用numpy替代循环（提速约100倍）
+x = np.random.uniform(0, a/2, n)
+phi = np.random.uniform(0, math.pi, n)
+crosses = (l * np.sin(phi) / 2) >= x
+m = np.sum(crosses)
 
-#绘制投针phi-x分布图
-plt.scatter(phi_history, x_history, c=joint_list, cmap='bwr', alpha=0.5)
-plt.colorbar(label='是否相交')
-plt.xlabel('针角度')
-plt.ylabel('针中点与最近平行线距离')
-plt.title('布丰模拟实验分布图')
-plt.xticks([0, math.pi/2, math.pi], ['0', 'π/2', 'π'])  # 显示π符号
-plt.yticks([0, a/2], ['0', 'a/2'])  # 纵轴标记为0和a/2
-plt.show()
+# ====== 结果计算 ======
+PI = (2 * l * n) / (a * m)
+print(f'模拟所得圆周率: {PI}')
 
+# ====== 可视化配置 ======
+plt.figure(figsize=(10, 6), dpi=100)
+
+# 绘制散点图（采样5000个点）
+sample_idx = np.random.choice(n, 5000, replace=False)
+plt.scatter(phi[sample_idx], x[sample_idx], 
+            c=crosses[sample_idx], 
+            cmap='bwr', 
+            alpha=0.5,
+            s=10)
+
+# 坐标轴和标签设置
+plt.xticks([0, math.pi/2, math.pi], 
+            ['0', 'π/2', 'π'],
+            fontproperties=cn_font)
+plt.yticks([0, a/4, a/2], 
+            ['0', 'a/4', 'a/2'],
+            fontproperties=cn_font)
+
+plt.xlabel('针角度', fontproperties=cn_font, fontsize=12)
+plt.ylabel('中点距离', fontproperties=cn_font, fontsize=12)
+plt.title('布丰投针实验分布图', fontproperties=cn_font, fontsize=14)
+
+# 颜色条设置
+cbar = plt.colorbar()
+cbar.set_label('相交状态', 
+                fontproperties=cn_font, 
+                rotation=270, 
+                labelpad=15)
+
+# 添加理论曲线
+phi_line = np.linspace(0, math.pi, 200)
+y_line = (l/2) * np.sin(phi_line)
+plt.plot(phi_line, y_line, 
+        '--', 
+        color='green', 
+        lw=2, 
+        label='理论边界')
+
+plt.legend(prop=cn_font)  # 图例字体设置
+
+# 保存图像
+plt.savefig("BuffonPlot2.png", 
+            dpi=150, 
+            bbox_inches='tight',
+            facecolor='white')
+print("图像已保存至 BuffonPlot2.png")

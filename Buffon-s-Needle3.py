@@ -6,11 +6,7 @@ import math
 # 设置中文字体
 matplotlib.rcParams['axes.unicode_minus'] = False
 matplotlib.rcParams['font.family'] = 'sans-serif'
-matplotlib.rcParams['font.sans-serif'] = [
-    'Noto Sans CJK SC',  # 谷歌思源黑体
-    'Source Han Sans SC', # Adobe思源黑体
-    'WenQuanYi Zen Hei',  # 文泉驿正黑
-]
+matplotlib.rcParams['font.sans-serif'] = ['Noto Sans CJK SC']  # 谷歌思源黑体
 
 # 实验参数设置
 a = 1        # 平行线间距

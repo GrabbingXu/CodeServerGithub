@@ -1,80 +1,44 @@
-# Forked from https://blog.csdn.net/2301_79376014/article/details/142071980
-import random as rd
-import math
-import matplotlib.pyplot as plt
-from matplotlib.font_manager import FontProperties
+# Improved from Buffon-s-Needle.py
+
 import numpy as np
+import matplotlib.pyplot as plt
+import math
 
-# ====== 字体配置 ======
-# 指定Noto Sans CJK SC字体文件路径
-font_path = "/usr/share/fonts/google-noto-sans-cjk-fonts/NotoSansCJK-Regular.ttc"
+# 针的长度
+l = 0.520
+# 平行线宽度
+a = 1.314
+# 试验次数n
+n = 10000
+# 相交次数
+count = 0
+# 在0~a/2之间产生n个随机数
+x = np.random.rand(n) * a / 2
+phi = np.random.rand(n) * math.pi
+# 储存不同颜色的点
+red_phi, red_x = [], []
+green_phi, green_x = [], []
 
-# 创建字体属性对象
-cn_font = FontProperties(fname=font_path)
+def test(times):
+    global count
+    for i in range(0, times):
+        if x[i] <= 1 / 2 * math.sin(phi[i]):
+            count += 1
+            red_phi.append(phi[i])
+            red_x.append(x[i])
+        else:
+            green_phi.append(phi[i])
+            green_x.append(x[i])
+    
+    plt.scatter(red_phi, red_x, c='r', marker='.', label='Intersected')
+    plt.scatter(green_phi, green_x, c='g', marker='.', label='Not Intersected')
+    plt.xlabel('Phi (radians)')
+    plt.ylabel('X Position')
+    plt.legend()
 
-# 全局字体设置
-plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
-
-# ====== 实验参数 ======
-a = 1        # 平行线间距
-l = 0.5      # 针的长度
-n = 100000   # 投掷次数
-
-# ====== 向量化计算优化 ======
-# 使用numpy替代循环（提速约100倍）
-x = np.random.uniform(0, a/2, n)
-phi = np.random.uniform(0, math.pi, n)
-crosses = (l * np.sin(phi) / 2) >= x
-m = np.sum(crosses)
-
-# ====== 结果计算 ======
-PI = (2 * l * n) / (a * m)
-print(f'模拟所得圆周率: {PI}')
-
-# ====== 可视化配置 ======
-plt.figure(figsize=(10, 6), dpi=100)
-
-# 绘制散点图（采样5000个点）
-sample_idx = np.random.choice(n, 5000, replace=False)
-plt.scatter(phi[sample_idx], x[sample_idx], 
-        c=crosses[sample_idx], 
-        cmap='bwr', 
-        alpha=0.5,
-        s=10)
-
-# 坐标轴和标签设置
-plt.xticks([0, math.pi/2, math.pi], 
-        ['0', 'π/2', 'π'],
-        fontproperties=cn_font)
-plt.yticks([0, a/4, a/2], 
-        ['0', 'a/4', 'a/2'],
-        fontproperties=cn_font)
-
-plt.xlabel('针角度', fontproperties=cn_font, fontsize=12)
-plt.ylabel('中点距离', fontproperties=cn_font, fontsize=12)
-plt.title('布丰投针实验分布图', fontproperties=cn_font, fontsize=14)
-
-# 颜色条设置
-cbar = plt.colorbar()
-cbar.set_label('相交状态',
-        fontproperties=cn_font, 
-        rotation=270, 
-        labelpad=15)
-
-# 添加理论曲线
-phi_line = np.linspace(0, math.pi, 200)
-y_line = (l/2) * np.sin(phi_line)
-plt.plot(phi_line, y_line, 
-        '--', 
-        color='green', 
-        lw=2, 
-        label='理论边界')
-
-plt.legend(prop=cn_font)  # 图例字体设置
-
-# 保存图像
-plt.savefig("BuffonPlot2.png", 
-        dpi=150, 
-        bbox_inches='tight',
-        facecolor='white')
-print("图像已保存至 BuffonPlot2.png")
+test(n)
+p = count / n
+mPi = (2 * l) / (a * p)
+print("蒙特卡洛方法得到Pi为：",mPi)
+plt.savefig("BuffonPlot.png", dpi=150, bbox_inches='tight')
+print("图像已保存至 BuffonPlot.png")

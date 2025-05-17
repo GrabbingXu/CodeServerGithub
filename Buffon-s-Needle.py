@@ -27,7 +27,7 @@ phi = np.random.rand(1, n) * math.pi
 def test(times):
     global count
     for i in trange(0, times):
-        if x[0][i] <= 1 / 2 * math.sin(phi[0][i]):
+        if x[0][i] <= l / 2 * math.sin(phi[0][i]):
             count = count + 1
             plt.scatter(phi[0][i] ,x[0][i] ,c='r',marker='.')
         else:

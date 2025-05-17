@@ -22,7 +22,7 @@ green_phi, green_x = [], []
 def test(times):
     global count
     for i in range(0, times):
-        if x[i] <= 1 / 2 * math.sin(phi[i]):
+        if x[i] <= l / 2 * math.sin(phi[i]):
             count += 1
             red_phi.append(phi[i])
             red_x.append(x[i])

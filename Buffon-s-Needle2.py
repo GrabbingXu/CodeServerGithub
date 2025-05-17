@@ -37,18 +37,18 @@ plt.figure(figsize=(10, 6), dpi=100)
 # 绘制散点图（采样5000个点）
 sample_idx = np.random.choice(n, 5000, replace=False)
 plt.scatter(phi[sample_idx], x[sample_idx], 
-            c=crosses[sample_idx], 
-            cmap='bwr', 
-            alpha=0.5,
-            s=10)
+        c=crosses[sample_idx], 
+        cmap='bwr', 
+        alpha=0.5,
+        s=10)
 
 # 坐标轴和标签设置
 plt.xticks([0, math.pi/2, math.pi], 
-            ['0', 'π/2', 'π'],
-            fontproperties=cn_font)
+        ['0', 'π/2', 'π'],
+        fontproperties=cn_font)
 plt.yticks([0, a/4, a/2], 
-            ['0', 'a/4', 'a/2'],
-            fontproperties=cn_font)
+        ['0', 'a/4', 'a/2'],
+        fontproperties=cn_font)
 
 plt.xlabel('针角度', fontproperties=cn_font, fontsize=12)
 plt.ylabel('中点距离', fontproperties=cn_font, fontsize=12)
@@ -56,10 +56,10 @@ plt.title('布丰投针实验分布图', fontproperties=cn_font, fontsize=14)
 
 # 颜色条设置
 cbar = plt.colorbar()
-cbar.set_label('相交状态', 
-                fontproperties=cn_font, 
-                rotation=270, 
-                labelpad=15)
+cbar.set_label('相交状态',
+        fontproperties=cn_font, 
+        rotation=270, 
+        labelpad=15)
 
 # 添加理论曲线
 phi_line = np.linspace(0, math.pi, 200)
@@ -74,7 +74,7 @@ plt.legend(prop=cn_font)  # 图例字体设置
 
 # 保存图像
 plt.savefig("BuffonPlot2.png", 
-            dpi=150, 
-            bbox_inches='tight',
-            facecolor='white')
+        dpi=150, 
+        bbox_inches='tight',
+        facecolor='white')
 print("图像已保存至 BuffonPlot2.png")

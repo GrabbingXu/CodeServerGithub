@@ -10,6 +10,7 @@ Created on Fri Apr  7 18:25:23 2023
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+from tqdm import trange
 
 # 针的长度
 l = 0.520
@@ -25,7 +26,7 @@ phi = np.random.rand(1, n) * math.pi
 
 def test(times):
     global count
-    for i in range(0, times):
+    for i in trange(0, times):
         if x[0][i] <= 1 / 2 * math.sin(phi[0][i]):
             count = count + 1
             plt.scatter(phi[0][i] ,x[0][i] ,c='r',marker='.')

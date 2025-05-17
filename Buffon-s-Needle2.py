@@ -40,5 +40,5 @@ test(n)
 p = count / n
 mPi = (2 * l) / (a * p)
 print("蒙特卡洛方法得到Pi为：",mPi)
-plt.savefig("BuffonPlot.png", dpi=150, bbox_inches='tight')
-print("图像已保存至 BuffonPlot.png")
+plt.savefig("BuffonPlot2.png", dpi=150, bbox_inches='tight')
+print("图像已保存至 BuffonPlot2.png")

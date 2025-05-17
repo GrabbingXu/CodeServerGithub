@@ -1,4 +1,4 @@
-# Improved from Buffon-s-Needle.py
+# Forked from git@github.com:henrCh1/Buffon-s-Needle.git
 
 import numpy as np
 import matplotlib.pyplot as plt
